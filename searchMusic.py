@@ -1,7 +1,16 @@
+# -*- coding:utf-8 -*-
+
 import requests
+import json
 
-url = "https://www.melon.com/search/keyword/index.json?jscallback=jQuery19108384283373015584_1575289329230&query=%25ED%2584%25B0&_=1575289329232"
+url = "https://www.melon.com/search/keyword/index.json"
+params = {
+    'jscallback': 'jQuery19108384283373015584_1575289329230',
+    'query' : '터보',
+} 
 
-response = requests.get(url).text
+response = requests.get(url, params=params).text
+json_string = response.replace(params['jscallback'] + '(', '').replace(');', '')
+result_dict = json.loads(json_string)
 
-print(response)
+print(result_dict)
