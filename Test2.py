@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from flask import Flask, request, jsonify
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
