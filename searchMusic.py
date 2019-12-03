@@ -16,5 +16,5 @@ soup = BeautifulSoup(html, 'html.parser')
 
 musicName = soup.findAll('span', {'class':'t_point'})
 artists = soup.findAll('a', {'class':'artist ellipsis'})
-
-print(artists)
+test = soup.findAll('td', {'class':'info'})
+print(test)
