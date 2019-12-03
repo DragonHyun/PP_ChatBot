@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 
 import requests
-import requests
 from bs4 import BeautifulSoup
 
-musicName = '애상'
+musicName = 'despacito'
 url = 'https://www.genie.co.kr/search/searchMain?query='
 url = url + musicName
-
+print(url)
 request = requests.get(url)
 html = request.text
 
