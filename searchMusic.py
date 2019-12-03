@@ -1,16 +1,21 @@
 # -*- coding:utf-8 -*-
 
 import requests
-import json
+import requests
+from bs4 import BeautifulSoup
 
-url = "https://www.melon.com/search/keyword/index.json"
-params = {
-    'jscallback': 'jQuery19108384283373015584_1575289329230',
-    'query' : '터보',
-} 
+musicName = '애상'
+url = 'https://www.genie.co.kr/search/searchMain?query='
+url = url + musicName
 
-response = requests.get(url, params=params).text
-json_string = response.replace(params['jscallback'] + '(', '').replace(');', '')
-result_dict = json.loads(json_string)
+request = requests.get(url)
 
-print(result_dict)
+html = request.text
+
+soup = BeautifulSoup(html, 'html.parser')
+
+musicName = soup.findAll('span', {'class':'t_point'})
+artists = soup.findAll('a', {'class':'artist ellipsis'})
+
+for i in range(4):
+    print(musicName[i].text + " - " + artists[i].text)
