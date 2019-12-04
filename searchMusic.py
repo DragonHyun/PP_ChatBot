@@ -4,10 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 
 musicName = 'despacito'
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 url = 'https://www.genie.co.kr/search/searchMain?query='
 url = url + musicName
 
-request = requests.get(url)
+request = requests.get(url, headers = headers)
 html = request.text
 
 soup = BeautifulSoup(html, 'html.parser')
