@@ -35,7 +35,7 @@ def searchMusic():
     
     answer = title.strip() + " - " + artists.strip()
     
-   res = {
+    res = {
         "version": "2.0",
         "template": {
             "outputs": [
