@@ -16,7 +16,8 @@ songs = soup.select('#body-content > div.search_song > div.search_result_detail 
 
 for song in songs:
     title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).find('span',{'class':'t_point'}).text
-    print(title.strip())
+    artists = song.find('td',{'class':'info'}).find('a', {'class':'artist ellipsis'})
+    print(title.strip() + " - " + artists.strip())
     
 #musicName = soup.select('span', {'class':'t_point'})
 #artists = soup.findAll('a', {'class':'artist ellipsis'})
