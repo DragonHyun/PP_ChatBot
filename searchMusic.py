@@ -15,6 +15,11 @@ soup = BeautifulSoup(html, 'html.parser')
 songs = soup.select('#body-content > div.search_song > div.search_result_detail > div > table > tbody > tr')
 
 for song in songs:
-    title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).find('span',{'class':'t_point'}).text
+    title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).find('span',{'class':'t_point'})
+    if title == None:
+        title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).find('span',{'class':'icon icon-title'}).text
+    else:
+        title = title.text
+    
     artists = song.find('td',{'class':'info'}).find('a', {'class':'artist ellipsis'}).text
     print(title + " - " + artists.strip())
