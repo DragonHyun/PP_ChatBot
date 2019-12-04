@@ -12,15 +12,14 @@ request = requests.get(url, headers = headers)
 html = request.text
 
 soup = BeautifulSoup(html, 'html.parser')
-#songs = soup.select('#body-content > div.search_song > div.search_result_detail > div > table > tbody > tr')
+songs = soup.select('#body-content > div.search_song > div.search_result_detail > div > table > tbody > tr')
 
-#for song in songs:
-#    title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).find('span',{'class':'t_point'}).text
-#    print(title.strip())
+for song in songs:
     
-musicName = soup.select('span', {'class':'t_point'})
-artists = soup.findAll('a', {'class':'artist ellipsis'})
-#test = soup.findAll('td', {'class':'info'})
-
-print(musicName)
-print(artists)
+    title = song.find('td',{'class':'info'}).find('a',{'class':'title ellipsis'}).get_text()
+    if title[1:6] == "TITLE":
+        title = title[6:]
+    
+    artists = song.find('td',{'class':'info'}).find('a',{'class':'artist ellipsis'}).text
+    
+    print(title.strip() + " - " artists.strip())
