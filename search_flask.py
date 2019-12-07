@@ -42,7 +42,7 @@ def searchMusic():
         if title[1:6] == "TITLE":
             title = title[6:]
         
-        artists = song.find('td',{'class':'info'}).find('a',{'class':'artist ellipsis'}).text
+        artist = song.find('td',{'class':'info'}).find('a',{'class':'artist ellipsis'}).text
         
         imgList.append("http:" + img)
         titleList.append(title.strip())
