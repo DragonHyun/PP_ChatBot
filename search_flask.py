@@ -3,25 +3,45 @@
 from flask import Flask, request, jsonify
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from pyvirtualdisplay import Display
 import urllib
 import requests
-#import json
+import json
 
 ERROR_MESSAGE = '네트워크 접속에 문제가 발생하였습니다. 잠시 후 다시 시도해주세요.'
 
 app = Flask(__name__)
 
 @app.route('/searchYoutube', methods=['POST'])
-def test():
+def searchYoutube():
     req = request.get_json()
-    ans = req['action']['clientExtra']['title'] + " " + req['action']['clientExtra']['artist']
+    
+    display = Display(visible = 0, size = (1024, 768))
+    display.start()
+    
+    driver = webdriver.Chrome('/home/ubuntu/chromedriver')
+    
+    title = req['action']['clientExtra']['title']
+    artist = req['action']['clientExtra']['artist']
+    
+    searchText = title + " " + artist
+    url = 'https://www.youtube.com/results?search_query='
+    url = url + searchText
+    
+    driver.get(url)
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    
+    videoID = soup.find('ytd-video-renderer', {'class':'style-scope ytd-item-section-renderer'}).find('a',{'id':'thumbnail'})['href']
+    
     res = {
             "version": "2.0",
             "template": {
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": ans
+                            "text": videoID
                         }
                     }
             ]
