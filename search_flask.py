@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# -*- coding:utf-7 -*-
 
 from flask import Flask, request, jsonify
 from urllib.request import urlopen, Request
@@ -48,12 +48,53 @@ YOUTUBE_READ_WRITE_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
+
 app = Flask(__name__)
 
+@app.route('/searchPlaylist', methods=['POST'])
+def searchPlaylist():
+
+    playlistID = 'PLZqEXGV8c4fQlAprbGYiRCI7zAxLOVjGd'
+    url = 'https://www.youtube.com/playlist?list='
+
+    url = url + playlistID
+    url = url + "a"
+    url = url[:-1]
+    html = requests.get(url).text
+
+    soup = BeautifulSoup(html, 'html.parser')
+    titles = soup.find_all('tr', {'class':'pl-video yt-uix-tile'})
+    playList = ""
+    i = 1
+
+    for title in titles:
+        playList = playList + str(i) + ". " + title['data-title'] + "\n"
+        i = i + 1
+
+    res = {
+            "version" : "2.0",
+            "template": {
+                "outputs": [
+                    {
+                        "simpleText": {
+                            "text": playList
+                        }
+                    }
+                ],
+                "quickReplies": [
+                    {
+                        "label": "♬처음으로♬",
+                        "action": "block",
+                        "blockId": "5df21f7392690d0001fc0eee"
+                    }
+                ]
+            }
+    }
+    return jsonify(res)
 
 @app.route('/searchYoutube', methods=['POST'])
 def searchYoutube():
-
+    
     req = request.get_json()
 
     title = req['action']['clientExtra']['title']
@@ -153,6 +194,11 @@ def insertMusic():
                 ],
                 "quickReplies": [
                     {
+                        "label":"♬더 추가하기♬",
+                        "action":"block",
+                        "blockId":"5deb6e1dffa74800014b00ee"
+                    },
+                    {
                         "label":"♬처음으로♬",
                         "action":"block",
                         "blockId":"5df21f7392690d0001fc0eee"
@@ -217,7 +263,7 @@ def searchMusic():
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": "검색하신 노래를 못찾겠어요..\n제목과 가수를 입력하러 가시겠어요?"
+                            "text": "검색하신 노래를 못찾겠어요..\n제목과 가수를 입력하러 >가시겠어요?"
                         }
                     }
                 ],
