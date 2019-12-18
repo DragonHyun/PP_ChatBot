@@ -1,6 +1,6 @@
-# -*- coding:utf-7 -*-
+# -*- coding:utf-8 -*-
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
 from apiclient.discovery import build
@@ -51,8 +51,13 @@ YOUTUBE_API_VERSION = "v3"
 
 app = Flask(__name__)
 
-@app.route('/searchPlaylist', methods=['POST'])
-def searchPlaylist():
+@app.route('/playMusic', methods = ['GET', 'POST'])
+def playMusic():
+
+    return render_template('playMusic.html')
+
+@app.route('/searchPlaylist1', methods=['POST'])
+def searchPlaylist1():
 
     playlistID = 'PLZqEXGV8c4fQlAprbGYiRCI7zAxLOVjGd'
     url = 'https://www.youtube.com/playlist?list='
@@ -64,12 +69,161 @@ def searchPlaylist():
 
     soup = BeautifulSoup(html, 'html.parser')
     titles = soup.find_all('tr', {'class':'pl-video yt-uix-tile'})
-    playList = ""
+    playList1 = "♬오늘의 재생목록♬\n노래는 랜덤재생 됩니다 :)\n\n"
+    playList2 = ""
+    playList3 = ""
+    playList4 = ""
     i = 1
 
     for title in titles:
-        playList = playList + str(i) + ". " + title['data-title'] + "\n"
-        i = i + 1
+        if i <= 70:
+            playList1 = playList1 + str(i) + ". " + title['data-title'] + "\n"
+        elif i <=140:
+            playList2 = playList2 + str(i) + ". " + title['data-title'] + "\n"
+        else:
+            playList3 = playList3 + str(i) + ". " + title['data-title'] + "\n"
+        i = i+1
+
+    if playList1 == "":
+        res = {
+                "version" : "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                                "text": "재생목록이 비어있어요!\n얼른 채워주세요~"
+                                }
+                        }
+                    ],
+                    "quickReplies": [
+                        {
+                            "label": "♬처음으로♬",
+                            "action": "block",
+                            "blockId": "5df21f7392690d0001fc0eee"
+                        }
+                    ]
+                }
+        }
+    elif playList2 == "":
+        res = {
+                "version" : "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                            "text": playList1
+                            }
+                        }
+                    ],
+                    "quickReplies": [
+                        {
+                            "label": "♬처음으로♬",
+                            "action": "block",
+                            "blockId": "5df21f7392690d0001fc0eee"
+                        }
+                    ]
+                }
+        }
+    else:
+        res = {
+                "version" : "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                            "text": playList1
+                            }
+                        }
+                    ],
+                    "quickReplies": [
+                        {
+                            "label": "♬다음 재생목록♬",
+                            "action": "block",
+                            "blockId": "5df8e845ffa74800014b4d7f",
+                            "extra": {"playList2":playList2, "playList3":playList3}
+                        },
+                        {
+                            "label": "♬처음으로♬",
+                            "action": "block",
+                            "blockId": "5df21f7392690d0001fc0eee"
+                        }
+                    ]
+                }
+        }
+
+    return jsonify(res)
+
+@app.route('/searchPlaylist2', methods=['POST'])
+def searchPlaylist2():
+    req = request.get_json()
+
+    playList2 = req['action']['clientExtra']['playList2']
+    playList3 = req['action']['clientExtra']['playList3']
+
+    if playList3 == "":
+        res = {
+                "version" : "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                                "text": playList2
+                            }
+                        }
+                    ],
+                    "quickReplies": [
+                        {
+                            "label": "♬이전 재생목록♬",
+                            "action": "block",
+                            "blockId": "5df4a4ae8192ac0001788b77",
+                        },
+                        {
+                            "label": "♬처음으로♬",
+                            "action": "block",
+                            "blockId": "5df21f7392690d0001fc0eee"
+                        }
+                    ]
+                }
+        }
+    else:
+        res = {
+                "version" : "2.0",
+                "template": {
+                    "outputs": [
+                        {
+                            "simpleText": {
+                                "text": playList2
+                            }
+                        }
+                    ],
+                    "quickReplies": [
+                        {
+                            "label": "♬이전 재생목록♬",
+                            "action": "block",
+                            "blockId": "5df4a4ae8192ac0001788b77",
+                        },
+                        {
+                            "label": "♬처음으로♬",
+                            "action": "block",
+                            "blockId": "5df21f7392690d0001fc0eee"
+                        },
+                        {
+                            "label": "♬다음 재생목록♬",
+                            "action": "block",
+                            "blockId": "5df8e84f92690d0001fc2da2",
+                            "extra": {"playList3":playList3}
+                        }
+                    ]
+                }
+        }
+    return jsonify(res)
+
+
+@app.route('/searchPlaylist3', methods=['POST'])
+def searchPlaylist3():
+    req = request.get_json()
+
+    playList3 = req['action']['clientExtra']['playList3']
 
     res = {
             "version" : "2.0",
@@ -77,11 +231,16 @@ def searchPlaylist():
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": playList
+                            "text": playList3
                         }
                     }
                 ],
                 "quickReplies": [
+                    {
+                        "label": "♬이전 재생목록♬",
+                        "action": "block",
+                        "blockId": "5df8e845ffa74800014b4d7f",
+                    },
                     {
                         "label": "♬처음으로♬",
                         "action": "block",
@@ -94,7 +253,7 @@ def searchPlaylist():
 
 @app.route('/searchYoutube', methods=['POST'])
 def searchYoutube():
-    
+
     req = request.get_json()
 
     title = req['action']['clientExtra']['title']
@@ -128,7 +287,7 @@ def searchYoutube():
                                     "blockId": "5df0791e92690d0001fbfe5b",
                                     "extra": {'videoID': videoID[9:]}
                                     #block insertMusic
-                                },
+                                    },
                                 {
                                     "action": "block",
                                     "label": "원하는 노래가 아니야!",
