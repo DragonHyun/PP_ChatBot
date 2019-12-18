@@ -422,7 +422,7 @@ def searchMusic():
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": "검색하신 노래를 못찾겠어요..\n제목과 가수를 입력하러 >가시겠어요?"
+                            "text": "검색하신 노래를 못찾겠어요..\n제목과 가수를 입력하러 가시겠어요?"
                         }
                     }
                 ],
@@ -461,19 +461,17 @@ def searchMusic():
                                         {
                                             "action": "block",
                                             "label": "추가",
-                                            "blockID": "5dec8f6b92690d0001fbe3f4",
-                                            "extra": {"title":titleList[0],
-                                                "artist":artistList[0]}
+                                            "blockId": "5dec8f6b92690d0001fbe3f4",
+                                            "extra": {'title': titleList[0], 'artist': artistList[0]}
                                         }
                                     ]
                                 },
                                 {
                                     "title": "찾는 노래가 없으신가요..?",
                                     "description": "자세히 제목과 가수를 입력해보시겠어요?",
-                                    "tumbnail": {
-                                        "imageUrl": {"https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
-                                        }
-                                    },
+                                    "thumbnail":{
+                                        "imageUrl": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+                                        },
                                     "buttons": [
                                         {
                                             "action": "block",
