@@ -468,7 +468,7 @@ def searchMusic():
                                 },
                                 {
                                     "title": "찾는 노래가 없으신가요..?",
-                                    "description": "자세히 제목과 가수를 입력해보시겠어요?",
+                                    "description": "자세히 제목과 가수를 입력해>보시겠어요?",
                                     "thumbnail":{
                                         "imageUrl": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
                                         },
