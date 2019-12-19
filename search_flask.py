@@ -48,6 +48,7 @@ YOUTUBE_READ_WRITE_SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
+playlist = "your playlist ID"
 
 app = Flask(__name__)
 
@@ -59,7 +60,7 @@ def playMusic():
 @app.route('/searchPlaylist1', methods=['POST'])
 def searchPlaylist1():
 
-    playlistID = 'PLZqEXGV8c4fQlAprbGYiRCI7zAxLOVjGd'
+    playlistID = playlist
     url = 'https://www.youtube.com/playlist?list='
 
     url = url + playlistID
@@ -336,7 +337,7 @@ def insertMusic():
             part='snippet',
             body=dict(
                 snippet=dict(
-                    playlistId = 'PLZqEXGV8c4fQlAprbGYiRCI7zAxLOVjGd',
+                    playlistId = playlist,
                     resourceId=dict(
                         kind = 'youtube#video',
                         videoId = video_id)))).execute()
