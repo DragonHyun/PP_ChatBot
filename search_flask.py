@@ -405,6 +405,8 @@ def searchMusic():
         title = title.get_text()
         if title[1:6] == "TITLE":
             title = title[6:]
+        if title[1:4] == "19금":
+            continue
         artist = artist.text
 
         imgList.append("http:" + img)
